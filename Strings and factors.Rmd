@@ -87,7 +87,7 @@ string_vec = c(
 
 str_detect(string_vec, "[0-9]")
 str_detect(string_vec, "^[0-9]")
-str_detect(string_vec, "^[0-9][a-z]")
+str_detect(string_vec, "^[0-9][a-zA-Z]")
 ```
 
 
@@ -100,8 +100,10 @@ string_vec = c(
   )
 
 str_detect(string_vec, "7.11")
+str_detect(string_vec, "7\\.11")
 ```
-
+.  represent any special charaters
+\\. actual dot
 ```{r}
 string_vec = c(
   'The CI is [2, 5]',
@@ -110,6 +112,7 @@ string_vec = c(
   'I found the answer on pages [6-7]'
   )
 
+str_detect(string_vec, "\\[")
 str_detect(string_vec, "\\[[0-9]")
 ```
 special character \\[]
@@ -121,10 +124,12 @@ vec_sex = factor(c("male", "male", "female", "female"))
 vec_sex
 
 as.numeric(vec_sex)
+```
 
-vec_sex = fct_relevel(vec_sex, "male")
+if I relevel...
+```{r}
+vec_sex=fct_relevel (vec_sex, 'male')
 vec_sex
-
 as.numeric(vec_sex)
 ```
 
