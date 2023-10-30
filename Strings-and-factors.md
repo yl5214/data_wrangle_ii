@@ -205,32 +205,34 @@ table_marj =
   slice(-1)
 ```
 
-need to tidy this!
+need to tidy this! NSDUH-strings
 
 ``` r
 marj_df =
   table_marj |> 
   select(-contains("P Value")) |> 
   pivot_longer(
-    -State,
+    -State, ##every thing in not state are pivot
     names_to = "age_year",
     values_to = "percent"
   ) |> 
-  separate(age_year, into = c("age", "year"), "\\(") |> 
+  separate(age_year, into = c("age", "year"), "\\(") |> ##define open parentheses， \\ can define (
   mutate(
     year = str_replace(year, "\\)", ""),
-    percent = str_replace(percent, "[a-b]", ""),
+    percent = str_replace(percent, "[a-b]$", ""),
     percent = as.numeric(percent)) |> 
-  filter(!(State %in% c("Total U.S.", "Northeast", "Midwest", "South", "West")))
+  filter(!(State %in% c("Total U.S.", "Northeast", "Midwest", "South", "West")))  ##not in state(c )
 ```
+
+NSDUH-factors
 
 ``` r
 marj_df |> 
   filter(age == "18-25") |> 
-  mutate(State = fct_reorder(State, percent)) |> 
+  mutate(State = fct_reorder(State, percent)) |>  ## factor variable has order, not mutate, alphabetical order for state, in order according to percentage because we want to see the pattern
   ggplot(aes(x = State, y = percent, color = year)) +
   geom_point() + 
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))## x-axis is not crowded
 ```
 
 <img src="Strings-and-factors_files/figure-gfm/unnamed-chunk-13-1.png" width="90%" />
